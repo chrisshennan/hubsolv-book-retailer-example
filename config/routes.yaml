@@ -2,10 +2,17 @@
 #    path: /
 #    controller: App\Controller\DefaultController::index
 
-books:
+books_list:
   path: /books
-  controller: App\Controller\ApiController::books
+  controller: App\Controller\ApiController::bookList
+  methods: [GET]
 
-categories:
+books_add:
+  path: /books
+  controller: App\Controller\ApiController::bookCreate
+  methods: [POST]
+
+categories_list:
   path: /categories
-  controller: App\Controller\ApiController::categories
+  controller: App\Controller\ApiController::categoryList
+  methods: [GET]

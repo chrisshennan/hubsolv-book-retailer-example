@@ -30,9 +30,18 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    mink.context:
-        class: 'Behat\MinkExtension\Context\MinkContext'
-        calls:
-        - [setMink, [ '@__behat__.mink']]
+#    mink.context:
+#        class: 'Behat\MinkExtension\Context\MinkContext'
+#        calls:
+#        - [setMink, [ '@__behat__.mink']]
+#        tags:
+#        - { name: fob.context_service }
+
+
+    App\EventListener\ApiTokenRequestListener:
         tags:
-        - { name: fob.context_service }
+        - { name: kernel.event_listener, event: kernel.request }
+
+    App\EventListener\JsonExceptionListener:
+        tags:
+        - { name: kernel.event_listener, event: kernel.exception }

@@ -1,12 +1,17 @@
 <?php
 
-namespace App\Behat;
-
+use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
+use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Tests\Functional\WebTestCase;
 
 class BookContext extends RawMinkContext
 {
+    /**
+     * @var EntityManager
+     */
+    private $entityManager;
+
     /** @var string */
     protected $authorFilter;
 
@@ -16,13 +21,18 @@ class BookContext extends RawMinkContext
     /** @var string */
     protected $apiPath;
 
+    public function __construct(EntityManager $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
     /**
      * @Given /^I am an api consumer$/
      */
     public function iAmAnApiConsumer()
     {
-        // We should set some sort of API Key here
-
+        // Set an API key
+        $this->getSession()->getDriver()->getClient()->setServerParameter('HTTP_API-TOKEN', 'SOME-API-KEY');
     }
 
     /**
@@ -46,7 +56,6 @@ class BookContext extends RawMinkContext
     /**
      * @Then /^I should receive a (\d+) response$/
      * @param $statusCode
-     * @throws \Behat\Mink\Exception\ExpectationException
      */
     public function iShouldReceiveAResponse($statusCode)
     {
@@ -58,7 +67,7 @@ class BookContext extends RawMinkContext
         }
 
         $this->visitPath($url);
-        $this->assertSession()->statusCodeEquals($statusCode);
+        WebTestCase::assertEquals($statusCode, $this->getSession()->getStatusCode());
     }
 
     /**
@@ -118,5 +127,17 @@ class BookContext extends RawMinkContext
     public function theContentTypeShouldBe($responseType)
     {
         WebTestCase::assertEquals($responseType, $this->getSession()->getResponseHeader('content-type'));
+    }
+
+    /**
+     * @When /^I create the following book$/
+     * @param TableNode $table
+     */
+    public function iCreateTheFollowingBook(TableNode $table)
+    {
+        $postData = array_combine($table->getRow(0), $table->getRow(1));
+        $this->apiPath = '/books';
+
+        $this->getSession()->getDriver()->getClient()->request ('POST', $this->apiPath, $postData);
     }
 }
