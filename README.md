@@ -1,6 +1,6 @@
 # Notes
-This project comes complete with its own environment to ensure consistency across different machines
-
+- This project comes complete with its own environment to ensure consistency across different machines
+- API Responses are build around the JSON API specification found at http://jsonapi.org
 # Setting up
 
 1. Checkout the project
@@ -43,4 +43,4 @@ docker run -it --rm --network=docker_hubsolv -e XDEBUG_CONFIG="remote_host=docke
  - Pagination the responses 
  - Return bad request status code where invalid filter options are passed
  - ApiController::bookCreate to be refactored to use Symfony Forms
- 
+ - Add the links section to the API responses
