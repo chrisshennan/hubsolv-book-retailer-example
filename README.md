@@ -1,5 +1,5 @@
 # Notes
-This project comes complete with a fully environment to ensure consistency across different machines
+This project comes complete with its own environment to ensure consistency across different machines
 
 # Setting up
 
