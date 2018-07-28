@@ -1,0 +1,39 @@
+version: '2'
+services:
+    nginx-hubsolv:
+        image: nginx:latest
+        ports:
+          - 80:80
+          - 443:443
+        volumes:
+          - ../:/app
+          - ./nginx:/etc/nginx/conf.d
+        depends_on:
+          - php-hubsolv
+          - mysql-57
+        networks:
+          - hubsolv
+
+    php-hubsolv:
+        image: thedrum/php:7.2-fpm-dev
+        environment:
+          XDEBUG_CONFIG: remote_host=${XDEBUG_REMOTE_HOST} remote_enable=1 remote_connect_back=0
+        volumes:
+          - ../:/app
+        networks:
+          - hubsolv
+
+    mysql-57:
+        image: mysql/mysql-server:5.7
+        ports:
+          - 3306:3306
+        environment:
+          - MYSQL_ROOT_PASSWORD=letmein!
+          - MYSQL_ROOT_HOST=%
+        volumes:
+          - ../mysql:/var/lib/mysql
+        networks:
+          - hubsolv
+
+networks:
+  hubsolv:
