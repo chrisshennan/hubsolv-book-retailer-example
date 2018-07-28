@@ -2,9 +2,11 @@ default:
     suites:
         default:
             contexts:
-                - FeatureContext:
-                    kernel: '@kernel'
                 - Behat\MinkExtension\Context\MinkContext
+                - DoctrineContext:
+                    entityManager: '@doctrine.orm.entity_manager'
+                    sampleFixtures: '@App\DataFixtures\SampleFixtures'
+                - App\Behat\BookContext
 
     extensions:
         Behat\Symfony2Extension:

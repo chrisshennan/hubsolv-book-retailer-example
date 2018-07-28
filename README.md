@@ -13,6 +13,7 @@ docker-compose up -d
 # Dev
 docker exec -it docker_php-hubsolv_1 /app/bin/console doctrine:database:create
 docker exec -it docker_php-hubsolv_1 /app/bin/console doctrine:migrations:migrate
+docker exec -it docker_php-hubsolv_1 /app/bin/console doctrine:fixtures:load
 
 # Test
 docker exec -it docker_php-hubsolv_1 /app/bin/console doctrine:database:create --env=test

@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
  */
-class Category
+class Category implements \JsonSerializable
 {
     /**
      * @ORM\Id()
@@ -77,4 +77,25 @@ class Category
 
         return $this;
     }
+
+    /**
+     * Implementing specification defined by http://jsonapi.org
+     * @return array|mixed
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'type' => 'category',
+            'id' => $this->getId(),
+            'attributes' => [
+                'title' => $this->getTitle(),
+            ],
+        ];
+    }
+
+    public function getIncludedRelationships()
+    {
+        return [];
+    }
+
 }

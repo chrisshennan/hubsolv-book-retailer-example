@@ -19,32 +19,30 @@ class BookRepository extends ServiceEntityRepository
         parent::__construct($registry, Book::class);
     }
 
-//    /**
-//     * @return Book[] Returns an array of Book objects
-//     */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param array $filters
+     * @return Book[] Returns an array of Book objects
+     */
+    public function findByFilters(array $filters = [])
     {
-        return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('b.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $filters = array_filter($filters);
 
-    /*
-    public function findOneBySomeField($value): ?Book
-    {
-        return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $queryBuilder = $this->createQueryBuilder('b');
+
+        if (isset($filters['author'])) {
+            $queryBuilder
+                ->innerJoin('b.Author', 'a')
+                ->andWhere('a.name = :author')
+                ->setParameter('author', $filters['author']);
+        }
+
+        if (isset($filters['category'])) {
+            $queryBuilder
+                ->innerJoin('b.Category', 'c')
+                ->andWhere('c.title = :category')
+                ->setParameter('category', $filters['category']);
+        }
+
+        return $queryBuilder->getQuery()->getResult();
     }
-    */
 }

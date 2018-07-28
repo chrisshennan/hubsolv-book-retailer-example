@@ -19,8 +19,11 @@
         "behat/mink-extension": "^2.3",
         "behat/symfony2-extension": "^2.1",
         "doctrine/doctrine-fixtures-bundle": "^3.0",
+        "friends-of-behat/cross-container-extension": "^1.1",
+        "phpunit/phpunit": "^7.2",
         "symfony/dotenv": "^4.1",
-        "symfony/maker-bundle": "^1.5"
+        "symfony/maker-bundle": "^1.5",
+        "symfony/test-pack": "^1.0"
     },
     "config": {
         "preferred-install": {

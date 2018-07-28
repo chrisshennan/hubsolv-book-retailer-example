@@ -2,6 +2,10 @@
 #    path: /
 #    controller: App\Controller\DefaultController::index
 
-index:
-  path: /
-  controller: App\Controller\ApiController::index
+books:
+  path: /books
+  controller: App\Controller\ApiController::books
+
+categories:
+  path: /categories
+  controller: App\Controller\ApiController::categories

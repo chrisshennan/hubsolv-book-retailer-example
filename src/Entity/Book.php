@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\BookRepository")
  */
-class Book
+class Book implements \JsonSerializable
 {
     /**
      * @ORM\Id()
@@ -126,5 +126,57 @@ class Book
         }
 
         return $this;
+    }
+
+    /**
+     * Implementing specification defined by http://jsonapi.org
+     * @return array|mixed
+     */
+    public function jsonSerialize()
+    {
+        $data = [
+            'type' => 'book',
+            'id' => $this->getId(),
+            'attributes' => [
+                'title' => $this->getTitle(),
+                'isbn'  => $this->getIsbn(),
+                'price' => $this->getPrice(),
+            ],
+            'relationships' => [
+                'author' => [
+                    'data' => [
+                        'id' => $this->getAuthor()->getId(),
+                        'type' => 'author',
+                    ]
+                ]
+            ]
+        ];
+
+        foreach ($this->getCategory() as $category) {
+            if (!isset($data['relationships']['categories'])) {
+                $data['relationships']['categories'] = [];
+            }
+
+            $data['relationships']['categories'][] = [
+                'data' => [
+                    'id' => $category->getId(),
+                    'type' => 'category',
+                ]
+            ];
+        }
+
+        return $data;
+    }
+
+    public function getIncludedRelationships()
+    {
+        $included = [];
+        $included[] = $this->getAuthor();
+
+        foreach ($this->getCategory() as $category) {
+            $included[] = $category;
+        }
+
+        return $included;
     }
 }
