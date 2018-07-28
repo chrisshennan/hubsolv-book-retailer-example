@@ -7,10 +7,15 @@ cd docker;
 docker-compose up -d
 ```
 
-2. Create the databases
+2. Create the dev and test databases
 
 ```
+# Dev
 docker exec -it docker_php-hubsolv_1 /app/bin/console doctrine:database:create
+
+
+# Test
+docker exec -it docker_php-hubsolv_1 /app/bin/console doctrine:database:create --env=test
 ```
 
 # Running tests
