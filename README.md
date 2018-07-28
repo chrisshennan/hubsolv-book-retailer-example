@@ -25,3 +25,8 @@ docker exec -it docker_php-hubsolv_1 /app/bin/console doctrine:migrations:migrat
 ```
 docker run -it --rm --network=docker_hubsolv -e XDEBUG_CONFIG="remote_host=docker.for.mac.localhost remote_enable=1" -w ${PWD} -v ${PWD}:${PWD} thedrum/php:7-fpm-dev vendor/bin/behat
 ```
+
+# Future Development
+ - Pagination the responses 
+ - Return bad request status code where invalid filter options are passed
+ 
